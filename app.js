@@ -1,6 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-const appData = require('./app-data.js')
+const appData = require('./app-data.js');
 const app = express();
 
 // This is middleware that requests pass through
@@ -11,7 +11,6 @@ app.use(morgan('common'));
 app.get('/apps', (req, res) => {
     // get the mark from the query
     const { sort, genres } = req.query;
-  
     let appFilter = [...appData];
 
     if ('genres' in req.query) {
@@ -20,16 +19,16 @@ app.get('/apps', (req, res) => {
         // mark is required
         return res
             .status(400)
-            .send('Provide genre');
+            .send('Provide genres');
         }
     }
     // do some validation
-    if (!genres) {
-        // mark is required
-        return res
-          .status(400)
-          .send('Please provide genres');
-      }
+    // if (!genres) {
+    //     // mark is required
+    //     return res
+    //       .status(400)
+    //       .send('Please provide genres');
+    //   }
 
       if (genres) {
         appFilter = appData.filter(app =>
@@ -46,18 +45,18 @@ app.get('/apps', (req, res) => {
                 .status(400)
                 .send('Provide sort with rating or app name');
             }
-        }
-    if (sort){
-        appFilter.sort((rating, app) =>{
-            if (rating[sort]> app[sort]) {return -1;}
-            if (rating[sort]< app[sort]) {return -1;}
-            return 0;
-        })
-    }
-
+        
+            if (sort){
+                appFilter.sort((Rating, App) =>{
+                    if (Rating[sort]> App[sort]) {return -1;}
+                    if (Rating[sort]< App[sort]) {return -1;}
+                    return 0;
+                })
+            }
         res.json(appFilter)
+    }
 });
   
-  app.listen(8000, () => {
+app.listen(8000, () => {
     console.log('Express server is listening on port 8000!');
 });
