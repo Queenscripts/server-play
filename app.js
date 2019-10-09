@@ -2,11 +2,11 @@ const express = require('express');
 const morgan = require('morgan');
 const appData = require('./app-data.js');
 const app = express();
-
+const cors = require('cors');
 // This is middleware that requests pass through
 // on their way to the final handler
 app.use(morgan('common'));
-
+app.use(cors())
 
 app.get('/apps', (req, res) => {
     // get the mark from the query
@@ -46,17 +46,21 @@ app.get('/apps', (req, res) => {
                 .send('Provide sort with rating or app name');
             }
         
-            if (sort){
-                appFilter.sort((Rating, App) =>{
-                    if (Rating[sort]> App[sort]) {return -1;}
-                    if (Rating[sort]< App[sort]) {return -1;}
-                    return 0;
-                })
+        if (sort === 'Rating'){
+            appFilter.sort((a, b) => {
+                return a.Rating - b.Rating
+            })
+        }
+        if (sort === 'App') { 
+            appFilter.sort(function(a, b) 
+            { 
+            if (a.App < b.App) { return -1;} 
+            if (a.App > b.App) { return 1;} 
+                return 0; 
+            }); 
             }
         res.json(appFilter)
     }
 });
   
-app.listen(8000, () => {
-    console.log('Express server is listening on port 8000!');
-});
+module.exports = app; 
