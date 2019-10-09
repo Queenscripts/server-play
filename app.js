@@ -10,6 +10,7 @@ app.use(cors())
 
 app.get('/apps', (req, res) => {
     // get the mark from the query
+    console.log(req.query)
     const { sort, genres } = req.query;
     let appFilter = [...appData];
 
@@ -35,8 +36,15 @@ app.get('/apps', (req, res) => {
           app.Genres.toLowerCase().includes(genres.toLowerCase())
         );
       }
-    
+    //   console.log(sort)
+
+      if (!sort && !genres){
+          return res 
+          .status(200)
+          .json(appFilter)
+      }
       
+
       if ('sort' in req.query) {
         // do some validation
             if (!['Rating','App'].includes(sort)) {
@@ -45,6 +53,7 @@ app.get('/apps', (req, res) => {
                 .status(400)
                 .send('Provide sort with rating or app name');
             }
+
         
         if (sort === 'Rating'){
             appFilter.sort((a, b) => {
