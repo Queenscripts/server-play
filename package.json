@@ -18,7 +18,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mocha": "^6.2.1",
+    "mocha": "^10.2.0",
     "morgan": "^1.9.1",
     "supertest": "^4.0.2"
   }
